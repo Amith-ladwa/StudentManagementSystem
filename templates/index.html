@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Management System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Management System</h1>
+
+    <!-- Dashboard -->
+
+    <div class="dashboard">
+
+        <div class="card">
+            <h3>Total Students</h3>
+            <p>{{ total_students }}</p>
+        </div>
+
+        {% for stat in course_stats %}
+
+        <div class="card">
+            <h3>{{ stat['course'] }}</h3>
+            <p>{{ stat['total'] }}</p>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- Add Student -->
+
+    <h2>Add Student</h2>
+
+    <form action="/" method="POST">
+
+        <input type="text"
+               name="name"
+               placeholder="Student Name"
+               required>
+
+        <input type="email"
+               name="email"
+               placeholder="Email"
+               required>
+
+        <input type="text"
+               name="course"
+               placeholder="Course"
+               required>
+
+        <button type="submit">Add Student</button>
+
+    </form>
+
+
+    <!-- Search -->
+
+    <h2>Search Student</h2>
+
+    <form action="/" method="GET">
+
+        <input type="text"
+               name="search"
+               placeholder="Search by name or email"
+               value="{{ search }}">
+
+        <button type="submit">Search</button>
+
+        <a href="/">
+            <button type="button">Show All</button>
+        </a>
+
+    </form>
+
+
+    <!-- Student List -->
+
+    <h2>Student List</h2>
+
+    {% if students %}
+
+    <table>
+
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Course</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for student in students %}
+
+        <tr>
+
+            <td>{{ student['id'] }}</td>
+            <td>{{ student['name'] }}</td>
+            <td>{{ student['email'] }}</td>
+            <td>{{ student['course'] }}</td>
+
+            <td>
+
+                <a href="/edit/{{ student['id'] }}">
+                    <button type="button">Edit</button>
+                </a>
+
+                <a href="/delete/{{ student['id'] }}"
+                   onclick="return confirm('Are you sure you want to delete this student?');">
+
+                    <button type="button">Delete</button>
+
+                </a>
+
+            </td>
+
+        </tr>
+
+        {% endfor %}
+
+    </table>
+
+    {% else %}
+
+    <p>No students found.</p>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
